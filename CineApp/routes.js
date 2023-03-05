@@ -22,7 +22,7 @@ routes.get('/peliculas', (req, res)=>{
     })
 })
 
-routes.get('/cine/buscarPeliculas/:nombre/:distrito', (req, res)=>{
+routes.get('/buscarcine/:nombre/:distrito', (req, res)=>{
     req.getConnection((err, conn)=>{
         if(err) return res.send(err);
 

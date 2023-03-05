@@ -1,0 +1,38 @@
+const express = require('express');
+const routes = express.Router();
+const multer = require('multer');
+const path = require("path");
+
+
+routes.get('/peliculas', (req, res)=>{
+    req.getConnection((err, conn)=>{
+        if(err) return res.send(err);
+
+        conn.query('SELECT * FROM pelicula', (err, rows)=>{
+         if(err) return res.send(err);
+         console.log(typeof(rows));
+         console.log(rows.length);
+         var rowsOriginal = new Array();
+         for (let i = 0; i < 7; i++) {
+            rowsOriginal[i] = rows[i]; 
+         }
+         console.log("hola" + rows[2].Formato_pelicula);
+         res.json(rowsOriginal);
+        });
+    })
+})
+
+routes.get('/cine/buscarPeliculas/:nombre/:distrito', (req, res)=>{
+    req.getConnection((err, conn)=>{
+        if(err) return res.send(err);
+
+        conn.query('select c.Nombre_cine, p.Nombre_pelicula, p.Formato_pelicula, c.Direccion_cine, f.Precio_nino, f.Precio_adulto, f.Precio_Amayor, f.Horario from cinefilo.funcion f inner join cinefilo.pelicula p on f.Id_pelicula  = p.idPelicula inner join cinefilo.cine c on f.Id_cine  = c.idCine where p.Nombre_pelicula = ? and c.Distrito_cine = ?',[[req.params.nombre], [req.params.distrito]], (err, rows)=> {
+            if(err) return res.send(err);
+            console.log(rows);
+            res.json(rows);
+        })
+    })
+})
+
+
+module.exports = routes;

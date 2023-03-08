@@ -26,7 +26,7 @@ routes.get('/buscarcine/:nombre/:distrito', (req, res)=>{
     req.getConnection((err, conn)=>{
         if(err) return res.send(err);
 
-        conn.query('select c.Nombre_cine , p.nombre , p.Formato_pelicula, c.Direccion_cine , f.Precio_nino, f.Precio_adulto, f.Precio_Amayor, f.Horario from cinefilo.funcion f inner join cinefilo.pelicula p on f.Id_pelicula  = p.Id_pelicula inner join cinefilo.cine c on f.Id_cine  = c.idCine  where p.nombre = ? and c.Distrito_cine = ?',[[req.params.nombre], [req.params.distrito]], (err, rows)=> {
+        conn.query('select c.Nombre_cine , c.coordenadaX, c.coordenadaY ,p.nombre , p.Formato_pelicula, c.Direccion_cine , f.Precio_nino, f.Precio_adulto, f.Precio_Amayor, f.Horario from cinefilo.funcion f inner join cinefilo.pelicula p on f.Id_pelicula  = p.Id_pelicula inner join cinefilo.cine c on f.Id_cine  = c.idCine  where p.nombre = ? and c.Distrito_cine = ?',[[req.params.nombre], [req.params.distrito]], (err, rows)=> {
             if(err) return res.send(err);
             console.log(rows);
             res.json(rows);
